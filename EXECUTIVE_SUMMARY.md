@@ -2,7 +2,7 @@
 
 **Date**: February 2026
 **Status**: Sprint 1 complete (CLI tool built), pre-launch
-**Tagline**: Terraform for the AI agent era
+**Tagline**: Discover the AI agents you didn't know you had. See every agent. Govern every risk.
 
 ---
 
