@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentGov — Pitch Deck</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-dark: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-card-hover: #1a1a2e;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --accent-glow: rgba(99, 102, 241, 0.15);
+    --green: #22c55e;
+    --green-glow: rgba(34, 197, 94, 0.15);
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border: #1e293b;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .slide {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    padding: 60px 80px;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide.active { display: flex; }
+
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .slide > * { position: relative; z-index: 1; }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+    background: rgba(18, 18, 26, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+  }
+
+  .nav button {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.2s;
+  }
+
+  .nav button:hover { background: var(--accent); border-color: var(--accent); }
+  .nav button:disabled { opacity: 0.3; cursor: default; }
+  .nav button:disabled:hover { background: var(--bg-card); border-color: var(--border); }
+
+  .slide-counter {
+    font-size: 14px;
+    color: var(--text-muted);
+    min-width: 60px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .dot-nav {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .dot.active { background: var(--accent); transform: scale(1.3); }
+  .dot:hover { background: var(--accent-light); }
+
+  /* Typography */
+  .slide-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+  }
+
+  h1 .gradient {
+    background: linear-gradient(135deg, var(--accent-light) 0%, #c084fc 50%, #f472b6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  h2 {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 32px;
+  }
+
+  h2 .gradient {
+    background: linear-gradient(135deg, var(--accent-light) 0%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 24px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 700px;
+    font-weight: 300;
+  }
+
+  .tagline {
+    display: inline-block;
+    padding: 8px 20px;
+    background: var(--accent-glow);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent-light);
+    margin-bottom: 32px;
+  }
+
+  /* Lists */
+  .bullet-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bullet-list li {
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    padding-left: 28px;
+    position: relative;
+  }
+
+  .bullet-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .bullet-list li strong { color: var(--text-primary); font-weight: 600; }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    gap: 20px;
+  }
+
+  .card-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .card-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.2s;
+  }
+
+  .card:hover { border-color: rgba(99, 102, 241, 0.3); background: var(--bg-card-hover); }
+
+  .card .card-icon {
+    font-size: 32px;
+    margin-bottom: 14px;
+  }
+
+  .card h3 { font-size: 18px; margin-bottom: 8px; }
+  .card p { font-size: 15px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* Stats */
+  .stat-row {
+    display: flex;
+    gap: 40px;
+    margin-top: 32px;
+  }
+
+  .stat { text-align: center; }
+
+  .stat .number {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--accent-light);
+    line-height: 1;
+  }
+
+  .stat .label {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  /* Code block */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 18px;
+    color: var(--green);
+    margin: 20px 0;
+    display: inline-block;
+  }
+
+  .code-block .prompt { color: var(--text-muted); }
+  .code-block .cmd { color: var(--green); }
+
+  /* Table */
+  .deck-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+  }
+
+  .deck-table th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .deck-table td {
+    padding: 10px 16px;
+    font-size: 15px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+  }
+
+  .deck-table td:first-child { color: var(--text-primary); font-weight: 500; }
+
+  .deck-table tr:last-child td { border-bottom: none; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .badge.python { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+  .badge.ts { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+  .badge.both { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+  .badge.done { background: var(--green-glow); color: var(--green); }
+  .badge.next { background: var(--accent-glow); color: var(--accent-light); }
+  .badge.future { background: rgba(100, 116, 139, 0.15); color: var(--text-muted); }
+  .badge.check { background: var(--green-glow); color: var(--green); }
+  .badge.pending { background: rgba(245, 158, 11, 0.15); color: var(--orange); }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 12px;
+  }
+
+  .timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .timeline-marker {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .timeline-marker.done { background: var(--green-glow); color: var(--green); border: 2px solid var(--green); }
+  .timeline-marker.next { background: var(--accent-glow); color: var(--accent-light); border: 2px solid var(--accent); }
+  .timeline-marker.later { background: rgba(100, 116, 139, 0.1); color: var(--text-muted); border: 2px solid var(--border); }
+
+  .timeline-content h3 { font-size: 20px; margin-bottom: 4px; }
+  .timeline-content p { font-size: 15px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* Two column layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* Asset list */
+  .asset-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .asset-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 17px;
+  }
+
+  .asset-list .asset-name { color: var(--text-primary); font-weight: 500; }
+  .asset-list .asset-value { color: var(--text-secondary); font-family: monospace; }
+
+  /* Comparison cards */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 32px;
+    align-items: center;
+    margin-top: 24px;
+  }
+
+  .comparison .arrow {
+    font-size: 36px;
+    color: var(--accent);
+  }
+
+  .comparison .box {
+    padding: 32px;
+    border-radius: 16px;
+    text-align: center;
+  }
+
+  .comparison .box.free {
+    background: var(--green-glow);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .comparison .box.paid {
+    background: var(--accent-glow);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+  }
+
+  .comparison .box h3 { font-size: 22px; margin-bottom: 8px; }
+  .comparison .box p { color: var(--text-secondary); font-size: 15px; }
+
+  /* Scrollable table wrapper */
+  .table-wrap {
+    max-height: 55vh;
+    overflow-y: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .table-wrap::-webkit-scrollbar { width: 6px; }
+  .table-wrap::-webkit-scrollbar-track { background: var(--bg-card); }
+  .table-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Footer */
+  .slide-footer {
+    position: absolute;
+    bottom: 20px;
+    left: 80px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Responsive - for smaller screens */
+  @media (max-width: 1200px) {
+    .slide { padding: 40px 50px; }
+    h1 { font-size: 56px; }
+    h2 { font-size: 38px; }
+    .subtitle { font-size: 20px; }
+  }
+
+  /* Print */
+  @media print {
+    .nav { display: none; }
+    .slide { display: flex !important; page-break-after: always; height: 100vh; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== SLIDE 1: TITLE ==================== -->
+<div class="slide active" id="slide-1">
+  <div class="tagline">Terraform for the AI agent era</div>
+  <h1><span class="gradient">AgentGov</span></h1>
+  <p class="subtitle">Discover, govern, and secure every AI agent in your organization.</p>
+  <div class="stat-row">
+    <div class="stat">
+      <div class="number">13+</div>
+      <div class="label">Frameworks detected</div>
+    </div>
+    <div class="stat">
+      <div class="number">182+</div>
+      <div class="label">Automated tests</div>
+    </div>
+    <div class="stat">
+      <div class="number">0</div>
+      <div class="label">Config required</div>
+    </div>
+  </div>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== SLIDE 2: THE PROBLEM ==================== -->
+<div class="slide" id="slide-2">
+  <div class="slide-label">The Problem</div>
+  <h2>Every company is deploying AI agents.<br><span class="gradient">Nobody knows how many they have.</span></h2>
+  <ul class="bullet-list">
+    <li><strong>Agent sprawl is real</strong> &mdash; LangChain, CrewAI, AutoGen, OpenAI Assistants, and 10+ other frameworks. Agents are being spun up by individual developers with no central visibility.</li>
+    <li><strong>A company thinks they have 12 agents</strong> &mdash; they actually have 47. No inventory, no ownership, no governance.</li>
+    <li><strong>Growing compliance blind spot</strong> &mdash; no "terraform plan" equivalent for AI agents. No way to discover what exists or assess governance gaps.</li>
+    <li><strong>Regulatory pressure is coming</strong> &mdash; the EU AI Act will require organizations to maintain inventories of AI systems, including autonomous agents.</li>
+  </ul>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== SLIDE 3: THE SOLUTION ==================== -->
+<div class="slide" id="slide-3">
+  <div class="slide-label">The Solution</div>
+  <h2><span class="gradient">Two-layer</span> approach</h2>
+  <div class="comparison">
+    <div class="box free">
+      <div style="font-size: 40px; margin-bottom: 12px;">&#9881;</div>
+      <h3>Agent Audit CLI</h3>
+      <p style="margin-bottom: 8px;"><span class="badge done">Free &amp; Open Source</span></p>
+      <p>Zero-config CLI that scans any codebase and discovers all AI agents. Instant visibility.</p>
+    </div>
+    <div class="arrow">&#8594;</div>
+    <div class="box paid">
+      <div style="font-size: 40px; margin-bottom: 12px;">&#9729;</div>
+      <h3>AgentGov Platform</h3>
+      <p style="margin-bottom: 8px;"><span class="badge next">SaaS &mdash; Paid</span></p>
+      <p>Web dashboard for continuous governance: org-wide scanning, agent registry, policy enforcement.</p>
+    </div>
+  </div>
+  <p style="margin-top: 32px; font-size: 20px; color: var(--text-secondary); text-align: center;">Think <strong style="color: var(--text-primary);">Snyk</strong> for AI agents &mdash; bottom-up developer adoption via free CLI, SaaS upsell for teams.</p>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== SLIDE 4: HOW IT WORKS ==================== -->
+<div class="slide" id="slide-4">
+  <div class="slide-label">How It Works</div>
+  <h2>One command. <span class="gradient">Total visibility.</span></h2>
+  <div class="code-block">
+    <span class="prompt">$</span> <span class="cmd">npx @agentgov/cli audit</span>
+  </div>
+  <div class="card-grid cols-3" style="margin-top: 24px;">
+    <div class="card">
+      <div class="card-icon">&#128269;</div>
+      <h3>Scan</h3>
+      <p>Walks your codebase using fast-glob. Respects .gitignore. Analyzes Python &amp; TypeScript files for agent framework patterns.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#127919;</div>
+      <h3>Detect</h3>
+      <p>Multi-signal confidence scoring: imports, instantiation, config files, dependencies, environment variables. Reports agents scoring 0.4+.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#9888;</div>
+      <h3>Risk &amp; Report</h3>
+      <p>Flags governance risks: no owner, stale agents, email capability, DB access, agent spawning. Outputs terminal, JSON, or HTML reports.</p>
+    </div>
+  </div>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== SLIDE 5: DETECTION COVERAGE ==================== -->
+<div class="slide" id="slide-5">
+  <div class="slide-label">Detection Coverage</div>
+  <h2><span class="gradient">13+ frameworks</span> across Python &amp; TypeScript</h2>
+  <div class="table-wrap">
+    <table class="deck-table">
+      <thead>
+        <tr><th>Framework</th><th>Language</th><th>Detection Signals</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>LangChain / LangGraph</td><td><span class="badge both">Python + TS</span></td><td>Import + instantiation + dependencies</td></tr>
+        <tr><td>CrewAI</td><td><span class="badge python">Python</span></td><td>Import + config files (crewai.yaml)</td></tr>
+        <tr><td>AutoGen / AG2</td><td><span class="badge python">Python</span></td><td>Import + instantiation patterns</td></tr>
+        <tr><td>Semantic Kernel</td><td><span class="badge python">Python</span></td><td>Import + instantiation patterns</td></tr>
+        <tr><td>Haystack</td><td><span class="badge python">Python</span></td><td>Import + pipeline patterns</td></tr>
+        <tr><td>LlamaIndex</td><td><span class="badge python">Python</span></td><td>Import + instantiation patterns</td></tr>
+        <tr><td>OpenAI Assistants</td><td><span class="badge both">Python + TS</span></td><td>Import + API patterns</td></tr>
+        <tr><td>Anthropic Claude</td><td><span class="badge python">Python</span></td><td>Import + tool_use patterns</td></tr>
+        <tr><td>AWS Bedrock Agents</td><td><span class="badge python">Python</span></td><td>Import + client patterns</td></tr>
+        <tr><td>Google Vertex AI</td><td><span class="badge python">Python</span></td><td>Import + agent_engines</td></tr>
+        <tr><td>Vercel AI SDK</td><td><span class="badge ts">TypeScript</span></td><td>Import + generateText/streamText</td></tr>
+        <tr><td>OpenAI SDK (JS)</td><td><span class="badge ts">TypeScript</span></td><td>Import + completions + tools</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== SLIDE 6: WHAT'S BUILT ==================== -->
+<div class="slide" id="slide-6">
+  <div class="slide-label">Sprint 1 Complete</div>
+  <h2>Production-quality software. <span class="gradient">Built and tested.</span></h2>
+  <div class="two-col">
+    <div>
+      <div class="stat-row" style="margin-top: 0; flex-wrap: wrap; gap: 24px;">
+        <div class="stat" style="text-align: left;">
+          <div class="number">26</div>
+          <div class="label">Source files</div>
+        </div>
+        <div class="stat" style="text-align: left;">
+          <div class="number">182+</div>
+          <div class="label">Passing tests</div>
+        </div>
+        <div class="stat" style="text-align: left;">
+          <div class="number">8</div>
+          <div class="label">Security invariants</div>
+        </div>
+        <div class="stat" style="text-align: left;">
+          <div class="number">3</div>
+          <div class="label">Output formats</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom: 12px;">
+        <h3>&#128230; @agentgov/scanner</h3>
+        <p>Core detection engine &mdash; 20 source files. Pattern matching, confidence scoring, git blame enrichment, risk detection.</p>
+      </div>
+      <div class="card" style="margin-bottom: 12px;">
+        <h3>&#128196; @agentgov/reporter</h3>
+        <p>Output formatting &mdash; terminal (colored tables), JSON (machine-readable), HTML (standalone report with charts).</p>
+      </div>
+      <div class="card">
+        <h3>&#9000; @agentgov/cli</h3>
+        <p>Command-line interface &mdash; commander.js, ora spinners, zero-config, npx-ready.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== SLIDE 7: ARCHITECTURE ==================== -->
+<div class="slide" id="slide-7">
+  <div class="slide-label">Architecture</div>
+  <h2>Every decision is <span class="gradient">reversible</span></h2>
+  <div class="card-grid cols-3" style="margin-top: 8px;">
+    <div class="card">
+      <h3>&#128230; Monorepo</h3>
+      <p>pnpm workspaces &mdash; scanner is already decoupled. SaaS imports it directly in Sprint 2.</p>
+    </div>
+    <div class="card">
+      <h3>&#128270; Regex Detection</h3>
+      <p>Fast, simple, works today. Swappable for AST-based parsing later with zero API changes.</p>
+    </div>
+    <div class="card">
+      <h3>&#128220; Apache 2.0</h3>
+      <p>Open-source CLI builds trust. SaaS layer can be proprietary. No licensing one-way door.</p>
+    </div>
+    <div class="card">
+      <h3>&#128190; Stateless</h3>
+      <p>No database in Sprint 1. Adding Neon PostgreSQL in Sprint 2 is purely additive.</p>
+    </div>
+    <div class="card">
+      <h3>&#9881; TypeScript ESM</h3>
+      <p>Same language as future Next.js SaaS. Modern ES2022 modules. tsup (esbuild) for builds.</p>
+    </div>
+    <div class="card">
+      <h3>&#128737; Security-First</h3>
+      <p>8 self-scanning security invariants. Automated quality gate. Pre-commit hooks. Static analysis only.</p>
+    </div>
+  </div>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== SLIDE 8: GO TO MARKET ==================== -->
+<div class="slide" id="slide-8">
+  <div class="slide-label">Go-to-Market</div>
+  <h2>Bottom-up <span class="gradient">developer adoption</span></h2>
+  <div class="two-col" style="margin-top: 8px;">
+    <div>
+      <ul class="bullet-list">
+        <li><strong>npx = zero-install trial</strong> &mdash; no signup, no config, no friction. Run one command, see instant results.</li>
+        <li><strong>Open-source builds trust</strong> &mdash; developers can inspect the code, contribute patterns, and extend detection.</li>
+        <li><strong>npm downloads = traction signal</strong> &mdash; organic growth metric for the free tier, visible to investors.</li>
+        <li><strong>SaaS upsell is natural</strong> &mdash; teams who find value in CLI scans want persistent dashboards, org-wide visibility, and policy enforcement.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom: 16px; border-color: rgba(34, 197, 94, 0.3);">
+        <h3 style="color: var(--green);">Free Tier (CLI)</h3>
+        <p>Scan local codebases. All 13+ frameworks. Terminal, JSON, HTML output. Unlimited use.</p>
+      </div>
+      <div class="card" style="border-color: rgba(99, 102, 241, 0.3);">
+        <h3 style="color: var(--accent-light);">Pro Tier (SaaS)</h3>
+        <p>Web dashboard. GitHub org scanning. Agent registry. Policy engine. Compliance reports. Team collaboration.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== SLIDE 9: ROADMAP ==================== -->
+<div class="slide" id="slide-9">
+  <div class="slide-label">Roadmap</div>
+  <h2>From CLI to <span class="gradient">platform</span></h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-marker done">&#10003;</div>
+      <div class="timeline-content">
+        <h3>Sprint 1 &mdash; Agent Audit CLI <span class="badge done">Complete</span></h3>
+        <p>Scan, detect, and report AI agents across 13+ frameworks. 26 source files, 182+ tests, security invariants, quality gates.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-marker next">2</div>
+      <div class="timeline-content">
+        <h3>Sprint 2 &mdash; SaaS Platform MVP <span class="badge next">Next</span></h3>
+        <p>Web dashboard (Next.js + Tailwind), database (Neon PostgreSQL + Drizzle), auth (Clerk), GitHub org scanning, agent registry, <code>--upload</code> flag.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-marker later">3</div>
+      <div class="timeline-content">
+        <h3>Sprint 3 &mdash; Growth &amp; Monetization <span class="badge future">Planned</span></h3>
+        <p>Policy engine, CI/CD integration (GitHub Action), compliance reports, notifications, team collaboration, pricing tiers.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-marker later">&#8734;</div>
+      <div class="timeline-content">
+        <h3>Future Vision <span class="badge future">Long-term</span></h3>
+        <p>Cross-cloud scanning (AWS, Azure, GCP), runtime observability, EU AI Act compliance mapping, SSO, audit logs, enterprise API.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== SLIDE 10: MARKET ==================== -->
+<div class="slide" id="slide-10">
+  <div class="slide-label">Market Opportunity</div>
+  <h2>Category creation. <span class="gradient">No incumbent.</span></h2>
+  <div class="two-col" style="margin-top: 8px;">
+    <div>
+      <ul class="bullet-list">
+        <li><strong>AI agent adoption is exponential</strong> &mdash; LangChain, CrewAI, and AutoGen are all seeing explosive growth in 2025-2026.</li>
+        <li><strong>No established player</strong> &mdash; "AI agent governance" is a new category. We're defining it, not competing in it.</li>
+        <li><strong>Enterprises can't answer the basic question</strong> &mdash; "How many AI agents do we have?" Nobody knows.</li>
+        <li><strong>Regulatory tailwind</strong> &mdash; EU AI Act mandates AI system inventories. This becomes a compliance requirement.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-bottom: 16px; color: var(--text-muted); font-size: 14px; letter-spacing: 2px; text-transform: uppercase;">Adjacent Market Comps</h3>
+      <div class="card" style="margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="margin-bottom: 2px;">Snyk</h3>
+            <p>Security scanning for code</p>
+          </div>
+          <div class="number" style="font-size: 28px;">$8B+</div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="margin-bottom: 2px;">HashiCorp</h3>
+            <p>Infrastructure governance</p>
+          </div>
+          <div class="number" style="font-size: 28px;">$5B+</div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="margin-bottom: 2px;">Datadog</h3>
+            <p>Observability platform</p>
+          </div>
+          <div class="number" style="font-size: 28px;">$40B+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== SLIDE 11: ASSETS ==================== -->
+<div class="slide" id="slide-11">
+  <div class="slide-label">Assets Secured</div>
+  <h2>Brand <span class="gradient">locked down</span></h2>
+  <ul class="asset-list">
+    <li>
+      <span class="asset-name">GitHub Organization</span>
+      <span class="asset-value">github.com/agent-gov</span>
+      <span class="badge check">&#10003; Created</span>
+    </li>
+    <li>
+      <span class="asset-name">npm Organization</span>
+      <span class="asset-value">@agentgov</span>
+      <span class="badge pending">&#9679; Pending</span>
+    </li>
+    <li>
+      <span class="asset-name">X / Twitter</span>
+      <span class="asset-value">@agentgov_ai</span>
+      <span class="badge check">&#10003; Created</span>
+    </li>
+    <li>
+      <span class="asset-name">Domain</span>
+      <span class="asset-value">agent-gov.com</span>
+      <span class="badge check">&#10003; Purchased</span>
+    </li>
+  </ul>
+  <p style="margin-top: 24px; color: var(--text-muted); font-size: 15px;">npm org pending support ticket resolution (#4088501). All other assets secured and operational.</p>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== SLIDE 12: NEXT STEPS ==================== -->
+<div class="slide" id="slide-12">
+  <div class="slide-label">Next Steps</div>
+  <h2>From code to <span class="gradient">customers</span></h2>
+  <div class="two-col" style="margin-top: 8px;">
+    <div>
+      <h3 style="margin-bottom: 16px;">Immediate (This Week)</h3>
+      <ul class="bullet-list" style="gap: 12px;">
+        <li>Initialize git repo and push to GitHub</li>
+        <li>Resolve npm org creation (support ticket)</li>
+        <li>Publish v0.1.0 to npm</li>
+        <li>E2E testing on real-world open-source repos</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-bottom: 16px;">Sprint 2 (Next 2 Weeks)</h3>
+      <ul class="bullet-list" style="gap: 12px;">
+        <li>Build SaaS platform (Next.js + Neon + Clerk)</li>
+        <li>GitHub org scanning via API</li>
+        <li>Web dashboard with agent registry</li>
+        <li>CLI <code style="color: var(--green);">--upload</code> flag to push results to platform</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top: 40px; padding: 28px; background: var(--accent-glow); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 16px; text-align: center;">
+    <p style="font-size: 22px; font-weight: 600;">Goal: First paying customer within 60 days of SaaS launch</p>
+  </div>
+  <div class="slide-footer">AgentGov &mdash; February 2026 &mdash; Confidential</div>
+</div>
+
+<!-- ==================== NAVIGATION ==================== -->
+<div class="nav">
+  <button id="prev-btn" onclick="changeSlide(-1)" disabled>&#8249;</button>
+  <div class="dot-nav" id="dot-nav"></div>
+  <span class="slide-counter" id="slide-counter">1 / 12</span>
+  <button id="next-btn" onclick="changeSlide(1)">&#8250;</button>
+</div>
+
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  const dotNav = document.getElementById('dot-nav');
+  const counter = document.getElementById('slide-counter');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+
+  // Create dots
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToSlide(i);
+    dotNav.appendChild(dot);
+  }
+
+  function goToSlide(n) {
+    slides[currentSlide].classList.remove('active');
+    dotNav.children[currentSlide].classList.remove('active');
+    currentSlide = n;
+    slides[currentSlide].classList.add('active');
+    dotNav.children[currentSlide].classList.add('active');
+    counter.textContent = (currentSlide + 1) + ' / ' + totalSlides;
+    prevBtn.disabled = currentSlide === 0;
+    nextBtn.disabled = currentSlide === totalSlides - 1;
+  }
+
+  function changeSlide(dir) {
+    const next = currentSlide + dir;
+    if (next >= 0 && next < totalSlides) goToSlide(next);
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      changeSlide(1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      changeSlide(-1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goToSlide(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goToSlide(totalSlides - 1);
+    }
+  });
+
+  // Touch navigation
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+{
+  "name": "@agentgov/cli",
+  "version": "0.1.0",
+  "description": "AgentGov CLI — Discover and govern AI agents in your codebase",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "bin",
+    "LICENSE",
+    "README.md"
+  ],
+  "bin": {
+    "agentgov": "./bin/agentgov.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@agentgov/scanner": "workspace:*",
+    "@agentgov/reporter": "workspace:*",
+    "commander": "^12.1.0",
+    "ora": "^8.1.1",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "governance",
+    "audit",
+    "langchain",
+    "crewai",
+    "autogen",
+    "openai",
+    "anthropic",
+    "cli"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agent-gov/agentgov",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://agent-gov.com",
+  "bugs": {
+    "url": "https://github.com/agent-gov/agentgov/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

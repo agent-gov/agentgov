@@ -1,0 +1,49 @@
+{
+  "name": "@agentgov/reporter",
+  "version": "0.1.0",
+  "description": "AgentGov scan report formatters (terminal, JSON, HTML)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@agentgov/scanner": "workspace:*",
+    "picocolors": "^1.1.1",
+    "cli-table3": "^0.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agent-gov/agentgov",
+    "directory": "packages/reporter"
+  },
+  "homepage": "https://agent-gov.com",
+  "bugs": {
+    "url": "https://github.com/agent-gov/agentgov/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
